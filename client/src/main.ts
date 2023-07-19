@@ -1,8 +1,6 @@
 import './style.css'
 
-const root = document.getElementById('app')!
-
-root.textContent = 'test'
+const root = document.getElementById('posts')!
 
 async function getPostComments(id: string) {
   const res = await fetch(`http://localhost:4001/posts/${id}/comments`)
@@ -12,10 +10,14 @@ async function getPostComments(id: string) {
 
   const comments = document.createElement('div')
 
+  comments.className = 'flex flex-col gap-2'
+
   json.map((comment: any) => {
     const div = document.createElement('div')
     const id = document.createElement('h4')
     const body = document.createElement('p')
+
+    div.className = 'p-2 border border-gray-400 rounded-md shadow-md'
 
     id.textContent = comment.id
     body.textContent = comment.content
@@ -41,6 +43,9 @@ async function getPosts() {
 
     div.className = 'p-2 border border-gray-400 rounded-md shadow-md'
     div.id = post.id
+    title.className = 'text-xl font-bold mb-2'
+    body.className = 'mb-4 border p-2 rounded-md'
+    comments.className = 'bg-blue-500 hover:bg-blue-700 mb-4 text-white font-bold py-2 px-4 rounded'
 
     comments.addEventListener('click', () => getPostComments(post.id))
 
