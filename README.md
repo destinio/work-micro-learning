@@ -12,13 +12,15 @@
 ## Scripts
 
 ```Makefile
-make build-all # build all services
+make build-all # build all services (not client)
 
 make posts # build posts service
 make comments # build comments service
 make query # build query service
 make events # build events service
 make moderation # build moderation service
+
+make client # build client app
 
 ```
 
