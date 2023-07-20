@@ -17,3 +17,5 @@ make query # build query service
 make events # build events service
 
 ```
+
+## Actions
