@@ -1,4 +1,4 @@
-name: 🧑‍🏭️ Services Build
+name: 🧑‍🏭️ Building Client
 on:
   push:
     branches: [ "main" ]
