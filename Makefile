@@ -1,6 +1,5 @@
 ONE_SHELL:
 
-SHELL = /bin/zsh
 BUILD_COMMAND = @cd $@ && npm run build > /dev/null
 BUILD_MESSAGE = @echo "Building $@"
 
