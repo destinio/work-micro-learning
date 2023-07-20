@@ -1,4 +1,5 @@
 ## Services
+[![All Services](https://github.com/destinio/work-micro-learning/actions/workflows/make-build.yml/badge.svg)](https://github.com/destinio/work-micro-learning/actions/workflows/make-build.yml)
 
 ### Ports
 - posts:4000
