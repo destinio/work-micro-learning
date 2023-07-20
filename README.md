@@ -1,5 +1,6 @@
 ## Services
 [![All Services](https://github.com/destinio/work-micro-learning/actions/workflows/make-build.yml/badge.svg)](https://github.com/destinio/work-micro-learning/actions/workflows/make-build.yml)
+[![🧑‍🏭️ Client](https://github.com/destinio/work-micro-learning/actions/workflows/node.js.yml/badge.svg)](https://github.com/destinio/work-micro-learning/actions/workflows/node.js.yml)
 
 ### Ports
 - posts:4000
