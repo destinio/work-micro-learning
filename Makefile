@@ -4,10 +4,10 @@ SHELL = /bin/zsh
 BUILD_COMMAND = @cd $@ && npm run build > /dev/null
 BUILD_MESSAGE = @echo "Building $@"
 
-build: posts comments query events
+build-all: posts comments query events
 
 posts:
-	$(BUILD_MESSAGE)
+	$(BUILD_MESSAGE) #this is a comment
 	$(BUILD_COMMAND)
 
 comments:
