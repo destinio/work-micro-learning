@@ -23,7 +23,7 @@ app.get('/posts', (req, res) => {
 
 // events from event bus
 app.post('/events', (req, res) => {
-  console.log('Received Event', req.body.type)
+  console.log('Query Service Received Event', req.body.type)
 
   const {type, data} = req.body
 
@@ -42,4 +42,4 @@ app.post('/events', (req, res) => {
   res.send({})
 })
 
-app.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`))
+app.listen(PORT, () => console.log(`Query service listening on port ${PORT}`))

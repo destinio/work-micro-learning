@@ -11,7 +11,7 @@ app.use(express.json());
 
 app.post('/events', async (req, res) => {
 
-  console.log(req.body.type)
+  console.log("Event Type: ", req.body.type)
 
   try {
     // posts
@@ -30,13 +30,13 @@ app.post('/events', async (req, res) => {
       },
       body: JSON.stringify(req.body),
     })
-    // fetch('http://localhost:4002/events', {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json'
-    //   },
-    //   body: JSON.stringify(req.body),
-    // })
+    fetch('http://localhost:4002/events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(req.body),
+    })
 
     res.status(200).send({ status: 'OK' })
   } catch (error) {
@@ -45,4 +45,4 @@ app.post('/events', async (req, res) => {
   }
 })
 
-app.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`))
+app.listen(PORT, () => console.log(`Event bus listening on port ${PORT}`))

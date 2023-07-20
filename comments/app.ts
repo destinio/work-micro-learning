@@ -54,9 +54,9 @@ app.post('/posts/:id/comments', async (req, res) => {
 
 // events from event bus
 app.post('/events', (req, res) => {
-  console.log('Received Event', req.body.type)
+  console.log('Comments Service Received Event', req.body.type)
   
   res.send({})
 })
 
-app.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`))
+app.listen(PORT, () => console.log(`Comments service listening on port ${PORT}`))
