@@ -1,4 +1,4 @@
-name: 🧑‍🏭️ Doing all the thing to the services
+name: 🧑‍🏭️ Services Build
 on:
   push:
     branches: [ "main" ]
