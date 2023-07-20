@@ -14,7 +14,7 @@ CLIENT_BUILD_MESSAGE = @echo "Installing dependencies for client"
 CLIENT_BUILD_COMMAND = @cd $@ && npm run build > /dev/null
 
 # build
-build-all: posts comments query events moderation
+build-all: events posts comments query moderation
 
 posts:
 	$(DEP_INSTALL_MESSAGE)
