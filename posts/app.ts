@@ -10,52 +10,34 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 
-const posts = [
-  {
-    id: 1,
-    title: "Hello World",
-    content: "This is my first post"
-  },
-  {
-    id: 2,
-    title: "Hello World 2",
-    content: "This is my second post"
-  },
-]
 
-app.get('/', (req, res) => {
-  res.send('Hello World!');
-})
-
-app.get('/posts', (req, res) => {
-  res.json(posts);
-})
-
-app.post('/posts', (req, res) => {
+app.post('/posts', async (req, res) => {
   const id = crypto.randomUUID();
-  const {title} = req.body;
-
-  posts[id] = {
-    id,
-    title,
-  }
+  const {title, content} = req.body;
 
   // emit event to event bus /events
-  fetch('http://localhost:4005/events', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      type: 'PostCreated',
-      data: {
-        id,
-        title: req.body.title,
-      }
-    }),
-  })
+  try {
+    await fetch('http://localhost:4005/events', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        type: 'PostCreated',
+        data: {
+          id,
+          title,
+          content,
+        }
+      }),
+    })
 
-  res.json({ id, title: req.body.title, content: req.body.content });
+    res.json({ id, title, content });
+    
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({ error: 'Error creating post' })
+  }
 })
 
 // events from event bus
