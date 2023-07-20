@@ -1,6 +1,7 @@
 import express from 'express';
 import crypto from 'crypto';
 import cors from 'cors';
+import fetch from 'node-fetch';
 
 const PORT = 4000;
 
@@ -9,7 +10,7 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 
-const post = [
+const posts = [
   {
     id: 1,
     title: "Hello World",
@@ -27,11 +28,30 @@ app.get('/', (req, res) => {
 })
 
 app.get('/posts', (req, res) => {
-  res.json(post);
+  res.json(posts);
 })
 
 app.post('/posts', (req, res) => {
   const id = crypto.randomUUID();
+  const {title} = req.body;
+
+  posts[id] = {
+    id,
+    title,
+  }
+
+  // emit event to event bus /events
+  fetch('http://localhost:4005/events', {
+    method: 'POST',
+    body: JSON.stringify({
+      type: 'PostCreated',
+      data: {
+        id,
+        title: req.body.title,
+      }
+    }),
+  })
+
   res.json({ id, title: req.body.title, content: req.body.content });
 })
 
