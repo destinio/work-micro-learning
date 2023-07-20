@@ -14,6 +14,52 @@ enum EventType {
   CommentUpdated = "CommentUpdated",
 }
 
+async function handleEvent(type: EventType, data: any) {
+  console.log("handleEvent", type)
+
+  if (type === EventType.PostCreated) {
+    const { id, title } = data
+    posts.push({ id, title, comments: [] })
+  }
+
+  if (type === EventType.CommentCreated) {
+    const { id, content, postId, status } = data
+
+    comments.push({ id, content, postId, status })
+
+    await fetch("http://localhost:4005/events", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        type: EventType.CommentModerated,
+        data: {
+          id,
+          content,
+          postId,
+          status,
+        },
+      }),
+    })
+  }
+
+  if (type === EventType.CommentUpdated) {
+    const { id, status } = data
+
+    const comment = comments.find((comment: any) => comment.id === id)
+
+    comment.status = status
+
+    comments = comments.map((comment: any) => {
+      if (comment.id === id) {
+        return { ...comment, status }
+      }
+      return comment
+    })
+  }
+}
+
 const app = express()
 
 app.use(cors())
@@ -71,52 +117,25 @@ app.post("/events", async (req, res) => {
 
   const { type, data } = req.body
 
-  if (type === EventType.PostCreated) {
-    const { id, title } = data
-    posts.push({ id, title, comments: [] })
-  }
+  await handleEvent(type, data)
 
-  if (type === EventType.CommentCreated) {
-    const { id, content, postId, status } = data
-
-    comments.push({ id, content, postId, status })
-
-    await fetch("http://localhost:4005/events", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        type: EventType.CommentModerated,
-        data: {
-          id,
-          content,
-          postId,
-          status,
-        },
-      }),
-    })
-  }
-
-  if (type === EventType.CommentUpdated) {
-    const { id, status } = data
-
-    const comment = comments.find((comment: any) => comment.id === id)
-    if (!comment) {
-      return res.status(404).send({ msg: "Comment not found" })
-    }
-
-    comment.status = status
-
-    comments = comments.map((comment: any) => {
-      if (comment.id === id) {
-        return { ...comment, status }
-      }
-      return comment
-    })
-  }
-
-  res.send({ msg: "OK" })
+  return res.send({ msg: "OK" })
 })
 
-app.listen(PORT, () => console.log(`Query service listening on port ${PORT}`))
+app.listen(PORT, async () => {
+  console.log(`Query service listening on port ${PORT}`)
+
+  try {
+    const res = await fetch("http://localhost:4005/events")
+    const events: any = await res.json()
+
+    for (let event of events) {
+      const e: any = event
+      console.log("Processing event:", e.type)
+
+      await handleEvent(e.type, e.data)
+    }
+  } catch (error) {
+    console.log(error.message)
+  }
+})
