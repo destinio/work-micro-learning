@@ -7,6 +7,12 @@ BUILD_MESSAGE = @echo "Building $@"
 DEP_INSTALL_MESSAGE = @echo "Installing dependencies for $@"
 DEP_COMMAND = @cd $@ && npm install > /dev/null
 
+CLIENT_INSTALL_MESSAGE = @echo "Installing dependencies for client"
+CLIENT_INSTALL_COMMAND = @cd $@ && npm install > /dev/null
+
+CLIENT_BUILD_MESSAGE = @echo "Installing dependencies for client"
+CLIENT_BUILD_COMMAND = @cd $@ && npm run build > /dev/null
+
 # build
 build-all: posts comments query events moderation
 
@@ -40,4 +46,11 @@ moderation:
 	$(BUILD_MESSAGE)
 	$(BUILD_COMMAND)
 
-.PHONY: build-all posts comments query events moderation
+client:
+	$(CLIENT_INSTALL_MESSAGE)
+	$(CLIENT_INSTALL_COMMAND)
+	$(CLIENT_BUILD_MESSAGE)
+	$(CLIENT_BUILD_COMMAND)
+
+
+.PHONY: build-all posts comments query events moderation client

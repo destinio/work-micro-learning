@@ -1,4 +1,4 @@
-name: 🌐 Building Services
+name: 📦 Building Client
 on:
   push:
     branches: [ "main" ]
@@ -17,5 +17,5 @@ jobs:
     - name: 📦️ Setup Node.js
       uses: actions/setup-node@v3.7.0
 
-    - name: 🛠️ Building Services
-      run: make build-all
+    - name: 🏗️ Build Client
+      run: make client
