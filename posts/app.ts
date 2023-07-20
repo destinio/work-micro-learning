@@ -10,31 +10,10 @@ const app = express();
 app.use(cors())
 app.use(express.json());
 
-// const posts = [
-//   {
-//     id: 1,
-//     title: "Hello World",
-//     content: "This is my first post"
-//   },
-//   {
-//     id: 2,
-//     title: "Hello World 2",
-//     content: "This is my second post"
-//   },
-// ]
-
-// app.get('/posts', (req, res) => {
-//   res.json(posts);
-// })
 
 app.post('/posts', async (req, res) => {
   const id = crypto.randomUUID();
   const {title, content} = req.body;
-
-  // posts[id] = {
-  //   id,
-  //   title,
-  // }
 
   // emit event to event bus /events
   try {

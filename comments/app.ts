@@ -8,28 +8,14 @@ const PORT = 4001;
 const app = express();
 app.use(cors())
 
-const commentsByPostId = {}
-
 app.use(express.json());
 
-app.get('/posts/:id/comments', (req, res) => {
-  res.send(commentsByPostId[req.params.id] || [])
-})
-
-app.post('/posts/:id/comments', async (req, res) => {
+app.post('/posts/:id', async (req, res) => {
   const commentId = crypto.randomUUID();
 
   const {content} = req.body
 
-  const comments = commentsByPostId[req.params.id] || []
-
-  comments.push({id: commentId, content})
-
-  commentsByPostId[req.params.id] = comments
-
-
   try {
-    console.log("TRYING TO SEND EVENT")
     await fetch('http://localhost:4005/events', {
       method: 'POST',
       headers: {
@@ -49,13 +35,12 @@ app.post('/posts/:id/comments', async (req, res) => {
     throw error
   }
 
-  res.status(201).send(comments)
+  res.status(201).send({ id: commentId, content, postId: req.params.id})
 })
 
 // events from event bus
 app.post('/events', (req, res) => {
   console.log('Comments Service Received Event', req.body.type)
-  
   res.send({})
 })
 

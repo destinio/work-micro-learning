@@ -3,7 +3,8 @@ import cors from 'cors';
 
 const PORT = 4002;
 
-const posts: any = {}
+const posts: any = []
+const comments: any = []
 
 enum EventType {
   PostCreated = 'PostCreated',
@@ -15,9 +16,28 @@ app.use(cors())
 
 app.use(express.json());
 
-
+// posts
 app.get('/posts', (req, res) => {
   res.send(posts)
+})
+app.get('/posts/:id', (req, res) => {
+  const post = posts.find((post: any) => post.id === req.params.id)
+
+  res.send(post)
+})
+
+// comments
+app.get('/comments', (req, res) => {
+  res.send(comments)
+})
+
+app.get('/comments/:id', (req, res) => {
+  const commet = comments.find((comment: any) => comment.id === req.params.id)
+  console.log({commet})
+  if (!commet) {
+    return res.status(404).send({ msg: 'Comment not found'})
+  }
+  res.send(commet)
 })
 
 // events from event bus
@@ -28,23 +48,17 @@ app.post('/events', (req, res) => {
 
   if (type === EventType.PostCreated) {
     const {id, title} = data
-    posts[id] = { id, title, comments: [] }
+    posts.push({ id, title, comments: [] })
   }
 
   if (type === EventType.CommentCreated) {
     const {id , content, postId} = data
 
-    const post = posts[postId]
-
-    if (!post) {
-      console.log('Post not found')
-      return res.status(404).send({ error: 'Post not found. No comment added' })
-    }
-
-    post.comments.push({id, content})
+    comments.push({id, content, postId})
+    console.log({comments})
   }
 
-  res.send({})
+  res.send({ msg: 'OK'})
 })
 
 app.listen(PORT, () => console.log(`Query service listening on port ${PORT}`))

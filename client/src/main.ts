@@ -3,7 +3,7 @@ import './style.css'
 const root = document.getElementById('posts')!
 
 async function getPostComments(id: string) {
-  const res = await fetch(`http://localhost:4001/posts/${id}/comments`)
+  const res = await fetch(`http://localhost:4002/posts/${id}/comments`)
   const json = await res.json()
 
   const postElement = document.getElementById(id)!
@@ -33,33 +33,41 @@ async function getPostComments(id: string) {
 
 async function getPosts() {
   // Hit the query service to get all posts
-  const res = await fetch('http://localhost:4002/posts') 
-  const json = await res.json()
+  try {
+    const res = await fetch('http://localhost:4002/posts') 
+    
+    const data = await res.json()
 
-  json.map((post: any) => {
-    const div = document.createElement('div')
-    const title = document.createElement('h3')
-    const body = document.createElement('p')
-    const comments = document.createElement('button')
+    console.log(data)
 
-    div.className = 'p-2 border border-gray-400 rounded-md shadow-md'
-    div.id = post.id
-    title.className = 'text-xl font-bold mb-2'
-    body.className = 'mb-4 border p-2 rounded-md'
-    comments.className = 'bg-blue-500 hover:bg-blue-700 mb-4 text-white font-bold py-2 px-4 rounded'
+    data.map((post: any) => {
+      const div = document.createElement('div')
+      const title = document.createElement('h3')
+      const body = document.createElement('p')
+      const comments = document.createElement('button')
 
-    comments.addEventListener('click', () => getPostComments(post.id))
+      div.className = 'p-2 border border-gray-400 rounded-md shadow-md'
+      div.id = post.id
+      title.className = 'text-xl font-bold mb-2'
+      body.className = 'mb-4 border p-2 rounded-md'
+      comments.className = 'bg-blue-500 hover:bg-blue-700 mb-4 text-white font-bold py-2 px-4 rounded'
 
-    title.textContent = post.title
-    body.textContent = post.content
-    comments.textContent = 'View Comments'
+      comments.addEventListener('click', () => getPostComments(post.id))
 
-    div.appendChild(title)
-    div.appendChild(body)
-    div.appendChild(comments)
+      title.textContent = post.title
+      body.textContent = post.content
+      comments.textContent = 'View Comments'
 
-    root.appendChild(div)
-  })
+      div.appendChild(title)
+      div.appendChild(body)
+      div.appendChild(comments)
+
+      root.appendChild(div)
+    })
+    
+  } catch (error) {
+    console.log(error)
+  }
 }
 
 getPosts()

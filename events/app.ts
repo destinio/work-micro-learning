@@ -15,7 +15,7 @@ app.post('/events', async (req, res) => {
   console.log('Event Bus Received event:', event)
 
   try {
-    // posts
+    // posts service
     fetch('http://localhost:4000/events', {
       method: 'POST',
       headers: {
@@ -23,7 +23,7 @@ app.post('/events', async (req, res) => {
       },
       body: JSON.stringify(req.body),
     })
-    // comments
+    // comments service
     fetch('http://localhost:4001/events', {
       method: 'POST',
       headers: {
@@ -31,6 +31,7 @@ app.post('/events', async (req, res) => {
       },
       body: JSON.stringify(req.body),
     })
+    // query service
     fetch('http://localhost:4002/events', {
       method: 'POST',
       headers: {
