@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    - uses: actions/setup-node@v3.7.0
     - uses: actions/checkout@v3
+    
     - name: 🛠️ Building Services
       run: make build-all
