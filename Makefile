@@ -8,7 +8,7 @@ DEP_INSTALL_MESSAGE = @echo "Installing dependencies for $@"
 DEP_COMMAND = @cd $@ && npm install > /dev/null
 
 # build
-build-all: posts comments query events
+build-all: posts comments query events moderation
 
 posts:
 	$(DEP_INSTALL_MESSAGE)
@@ -34,4 +34,10 @@ events:
 	$(BUILD_MESSAGE)
 	$(BUILD_COMMAND)
 
-.PHONY: build-all posts comments query events
+moderation:
+	$(DEP_INSTALL_MESSAGE)
+	$(DEP_COMMAND)
+	$(BUILD_MESSAGE)
+	$(BUILD_COMMAND)
+
+.PHONY: build-all posts comments query events moderation
