@@ -32,7 +32,8 @@ async function getPostComments(id: string) {
 }
 
 async function getPosts() {
-  const res = await fetch('http://localhost:4000/posts') 
+  // Hit the query service to get all posts
+  const res = await fetch('http://localhost:4002/posts') 
   const json = await res.json()
 
   json.map((post: any) => {

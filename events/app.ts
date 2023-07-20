@@ -10,9 +10,9 @@ app.use(cors())
 app.use(express.json());
 
 app.post('/events', async (req, res) => {
-  const event: any = JSON.stringify(req.body);
+  const event: any = req.body.type;
 
-  console.log('Received event:', event.type)
+  console.log('Event Bus Received event:', event)
 
   try {
     // posts
