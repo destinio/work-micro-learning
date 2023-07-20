@@ -43,6 +43,9 @@ app.post('/posts', (req, res) => {
   // emit event to event bus /events
   fetch('http://localhost:4005/events', {
     method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
     body: JSON.stringify({
       type: 'PostCreated',
       data: {
@@ -53,6 +56,13 @@ app.post('/posts', (req, res) => {
   })
 
   res.json({ id, title: req.body.title, content: req.body.content });
+})
+
+// events from event bus
+app.post('/events', (req, res) => {
+  console.log('Received Event', req.body.type)
+  
+  res.send({})
 })
 
 app.listen(PORT, () => console.log(`Server is running at http://localhost:${PORT}`))
